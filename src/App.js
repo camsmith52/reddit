@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {BrowserRouter as Router} from 'react-router-dom'
 import Search from "./Components/Search";
 import AuthContext from "./AuthContext";
 import Content from "./Components/Content";
