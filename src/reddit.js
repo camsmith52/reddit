@@ -4,7 +4,7 @@ export default axios.create({
   baseURL: "https://www.reddit.com/r/",
   params: {
     listing:{},
-    limit: 25,
+    limit: 5,
     show: "all",
     format: "json",
   },

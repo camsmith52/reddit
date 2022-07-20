@@ -6,12 +6,17 @@ const Search = ({ setSearch }) => {
 
   const inputElement = useRef();
 
-  console.log(auth.search);
+  const searching = e=>{
+
+
+    setSearch(e.target.value);
+  }
+
   return (
     <div>
       <input
         ref={inputElement}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => searching(e)}
         value={auth.search}
         type="text"
         placeholder="Search"
