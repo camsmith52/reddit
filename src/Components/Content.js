@@ -14,24 +14,23 @@ const Content = () => {
         .get(`${auth.search}.json`, {})
         .then((res) => setData((prev) => res.data.data.children));
     };
-    
-    let timeoutId
-    if(auth.search&&!data.length){
+
+    let timeoutId;
+    if (auth.search && !data.length) {
       response();
-    }
-    else{
-      timeoutId = setTimeout(()=>{
-        if(auth.search){
-          response()
+    } else {
+      timeoutId = setTimeout(() => {
+        if (auth.search) {
+          response();
         }
-      },1500)
+      }, 1500);
     }
 
-    return ()=>{
-      clearTimeout(timeoutId)
-    }
+    return () => {
+      clearTimeout(timeoutId);
+    };
 
-
+    /* eslint-disable */
   }, [auth.search]);
   console.log(data);
 
