@@ -1,54 +1,61 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import reddit from "../reddit";
 import AuthContext from "../AuthContext";
 import redditpic from "../images/reddit.jfif";
 
 const Content = () => {
-  const [data, setData] = useState([]);
+  
 
   const auth = useContext(AuthContext);
   let content;
+
   useEffect(() => {
     const response = async () => {
       await reddit
-        .get(`${auth.search}.json`, {})
-        .then((res) => setData((prev) => res.data.data.children));
+        .get(`/search.json`, {
+          params: {
+            limit: 10,
+            type: 'link',
+            t: 'day',
+            sort: 'new',
+            q: auth.searchInBar,
+            
+          },
+        })
+        .then((res) => auth.setData((prev) => res.data.data.children));
     };
+    response();
+    /* eslint-disable */
+  }, [auth.searchInBar]);
 
-    let timeoutId;
-    if (auth.search && !data.length) {
-      response();
-    } else {
-      timeoutId = setTimeout(() => {
-        if (auth.search) {
-          response();
-        }
-      }, 1500);
-    }
-
-    return () => {
-      clearTimeout(timeoutId);
+  useEffect(() => {
+    console.log('useeffect running')
+    const response = async () => {
+      await reddit
+        .get(`/r/${auth.search}.json`, {})
+        .then((res) => auth.setData((prev) => res.data.data.children));
     };
-
+    response();
     /* eslint-disable */
   }, [auth.search]);
-  console.log(data);
+  
+  
 
-  content = data.map((ele) => {
+  content = auth.data.map((ele) => {
     return (
       <div className="ui divided items" key={ele.data.id}>
         <div className="item">
           <div className="ui small image">
-            <img alt={ele.data.id} src={ele.data.thumbnail.length>10 ? ele.data.thumbnail: redditpic } />
+            <img
+              alt={ele.data.id}
+              src={
+                ele.data.thumbnail.length > 10 ? ele.data.thumbnail : redditpic
+              }
+            />
           </div>
 
           <div
-            style={{
-              width: "40%",
-              display: "flex",
-              justifyContent: "center",
-              alignContent: "center",
-            }}
+            
             className="middle aligned content"
           >
             <a href={ele.data.url} target="blank">
@@ -60,8 +67,13 @@ const Content = () => {
     );
   });
 
-  return <div  style={{
-              width: "60%"}}>{content}</div>;
+  return (
+    <div
+      
+    >
+      {content}
+    </div>
+  );
 };
 
 export default Content;
